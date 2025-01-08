@@ -11,7 +11,7 @@ authRouter.post("/signup",async(req,res)=>{
 
     try{
         validatorSignUp(req);
-      const {firstName,lastName, gender,email,password}= req.body;
+      const {firstName,lastName, gender,email,password,skills,age,about}= req.body;
       
      const passwordHash=   await bcrypt.hash(password,10,);
         await User({
@@ -19,7 +19,10 @@ authRouter.post("/signup",async(req,res)=>{
           lastName,
           gender,
           email,
-          password:passwordHash
+          password:passwordHash,
+          skills,
+          age,
+          about
         }).save();
     res.send("data saved successfully !!");
     }catch(err){
@@ -31,6 +34,7 @@ authRouter.post("/signup",async(req,res)=>{
 authRouter.post("/login",async(req,res)=>{
     try{
       const{email,password}=req.body;
+      console.log(email +"\n" +password)
       const user = await User.findOne({email:email});
       if(!user){
         throw new Error("invalid creds");
@@ -41,7 +45,11 @@ authRouter.post("/login",async(req,res)=>{
         const token = await  user.getJWT();
         res.cookie("token",token);
   
-        res.send("Login Successfull!!");
+        res.json({
+          message:"Login Succesful",
+          token:token,
+          user
+        });
       }
       else{
         throw new Error("invalid creds");

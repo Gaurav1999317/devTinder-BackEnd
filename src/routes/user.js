@@ -64,7 +64,7 @@ userRouter.get("/feed",userAuth,async(req,res)=>{
         limit=limit>50?50:limit;
 
         const page = parseInt(req.query.page)||1;//
-        const skip= (page-1)*limit;//no of users to skip these much users
+        const skip= (page-1)*limit;//no of users to skip 
 
     const connectionRequest= await ConnectionRequest.find({
         $or:[
@@ -77,15 +77,15 @@ userRouter.get("/feed",userAuth,async(req,res)=>{
         hideUsersFromFeed.add(req.fromUserId.toString());
         hideUsersFromFeed.add(req.toUserId.toString());
     });//to enter the id of the user which are connection, rejected, ignored, accepted from the logged In user
-    const users = await User.find({
+    const data = await User.find({
       $and:[
         {_id:{$nin:Array.from(hideUsersFromFeed)}},//(nin:not in)checking whether the set have the values fo id present
         {_id:{$ne:loggedInUser._id}}//(ne:not equal to)checking for tthe user id 
       ]  
-    }).select("firstName lastName gender").skip(page).limit(limit);
+    }).select("firstName lastName gender age about skills").skip(skip).limit(limit);
 
     
-res.json({users});
+res.json({data});
 //     
 
     }catch(err){

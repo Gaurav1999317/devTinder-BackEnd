@@ -5,6 +5,7 @@ const connectdb=require("./database/database");
 const {profileRouter}=require("./routes/profile");
 const {authRouter}= require("./routes/auth");
 const cookieParser = require("cookie-parser");
+const cors=require("cors");
 //const bcrypt=require("bcrypt");
 //const jwt= require("jsonwebtoken");
 const requestRouter= require("./routes/request")
@@ -13,8 +14,8 @@ const userRouter= require("./routes/user")
 
 connectdb().then(
     ()=>{
-        
-            console.log("Database connected")
+console.log()  
+          console.log("Database connected")
             app.listen(7777);//listen to server
             console.log("listening to the server");
         
@@ -30,6 +31,13 @@ connectdb().then(
 
 //     res.send("hello!!");//
 // });
+
+app.use(cors({
+    origin:"http://localhost:5173",
+    credentials:true,
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"], 
+    allowedHeaders: ["Content-Type", "Authorization"],
+}))
 app.use(express.json());//convert json to js object
 app.use(cookieParser());
 
