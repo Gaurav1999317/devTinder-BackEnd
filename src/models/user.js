@@ -14,7 +14,6 @@ const userSchema = mongoose.Schema(
     },
     gender: {
       type: String,
-      required: true,
       lowercase: true,
       validate(value) {
         if (!["male", "female", "other"].includes(value)) {
@@ -48,10 +47,12 @@ const userSchema = mongoose.Schema(
     // New fields added below
     age: {
       type: Number,
+      default:0,
       min: 0, // Age should be a non-negative number
     },
     about: {
       type: String,
+      default:"this is default user",
       maxLength: 500, // Optional max length for the "about" section
     },
     skills: {

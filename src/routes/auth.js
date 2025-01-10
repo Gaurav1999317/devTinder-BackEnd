@@ -11,20 +11,20 @@ authRouter.post("/signup",async(req,res)=>{
 
     try{
         validatorSignUp(req);
-      const {firstName,lastName, gender,email,password,skills,age,about}= req.body;
+      const {firstName,lastName,email,password,}= req.body;
       
      const passwordHash=   await bcrypt.hash(password,10,);
-        await User({
+       const savedUser= await User({
           firstName,
           lastName,
-          gender,
           email,
           password:passwordHash,
-          skills,
-          age,
-          about
         }).save();
-    res.send("data saved successfully !!");
+        const token = await  savedUser.getJWT();
+        res.cookie("token",token,{
+          expires:new Date(Date.now()+8*3600000),
+        });
+    res.json({message:"User Added Succesfully",data:savedUser});
     }catch(err){
         res.status(400).send("Error:"+err.message)
 
@@ -43,7 +43,9 @@ authRouter.post("/login",async(req,res)=>{
       if(isPasswordCorrect){
         //create a cookie with json web token
         const token = await  user.getJWT();
-        res.cookie("token",token);
+        res.cookie("token",token,{
+          expires:new Date(Date.now()+8*3600000),
+        });
   
         res.json({
           message:"Login Succesful",

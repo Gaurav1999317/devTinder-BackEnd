@@ -6,14 +6,14 @@ const {User}= require("../models/user")
 userRouter.get("/user/requests/received",userAuth,async(req,res)=>{
     try{
         const loggedInUser=req.user;
-        const connectionRequest= await
+        const data= await
          ConnectionRequest.find(
             {toUserId:loggedInUser._id,status:"interested"}
         ).populate("fromUserId",
-            "firstName lastName gender"
+            "firstName lastName gender about age"
         );
-        console
-        res.json({message:"request pending",connectionRequest})
+        
+        res.json({message:"request pending",data})
         
 
     }catch(err){
@@ -35,9 +35,9 @@ userRouter.get("/user/connections",userAuth,async(req,res)=>{
 
                         ]
             }).populate("fromUserId",
-                "firstName lastName gender"
+                "firstName lastName gender age about"
             ).populate("toUserId",
-                "firstName lastName gender"
+                "firstName lastName gender age about"
             );
         //     const connectionRequest2 = await ConnectionRequest.find({
         //         fromUserId:loggedInUser._id,

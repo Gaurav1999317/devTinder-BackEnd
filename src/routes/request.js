@@ -9,6 +9,7 @@ requestRouter.post("/request/send/:status/:userId",userAuth,async(req,res)=>{
     try{
         const toUserId=req.params.userId;
         const status= req.params.status;
+        console.log(status)
         const fromUserId = req.user._id;
         allowedStatus=["interested","ignored"];
        
@@ -41,7 +42,7 @@ requestRouter.post("/request/send/:status/:userId",userAuth,async(req,res)=>{
         );
         const data=await connectionRequest.save();
         res.json({
-            message:"request sent succesfully!",
+            message:status=="interested"?status:"ignored",
             data
         })
 
