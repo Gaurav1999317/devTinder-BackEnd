@@ -37,7 +37,7 @@ authRouter.post("/login",async(req,res)=>{
       console.log(email +"\n" +password)
       const user = await User.findOne({email:email});
       if(!user){
-        throw new Error("invalid creds");
+        throw new Error("invalid creds + user not found");
       }
       const isPasswordCorrect= await user.validatePassword(password);
       if(isPasswordCorrect){

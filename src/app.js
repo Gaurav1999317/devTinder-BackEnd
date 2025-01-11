@@ -1,5 +1,5 @@
 const express= require("express");
-require('dotenv').config()
+
 const app=express();//creating the server
 const connectdb=require("./database/database");
 //const {User}=require("./models/user")
@@ -7,6 +7,7 @@ const {profileRouter}=require("./routes/profile");
 const {authRouter}= require("./routes/auth");
 const cookieParser = require("cookie-parser");
 const cors=require("cors");
+require('dotenv').config()
 //const bcrypt=require("bcrypt");
 //const jwt= require("jsonwebtoken");
 const requestRouter= require("./routes/request")
